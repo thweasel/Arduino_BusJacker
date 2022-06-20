@@ -23,13 +23,14 @@ void endBUSRQ(void);
 void startMEMRQ(void);
 void endMEMRQ(void);
 
-void startRead(void);
-void endRead(void);
+void startMemoryAccess_Read(void);
+void endMemoryAccess_Read(void);
 
-void startWrite(void);
-void endWrite(void);
+void startMemoryAccess_Write(void);
+void endMemoryAccess_Write(void);
 
-void writeData(uint8_t data);
+void writeToDatabus(uint8_t data);
+
+// Memory methods
 
 void writeOneByteToMemory(uint16_t Address, uint8_t Data);
-void writeTwoBytesToMemory(uint16_t Address, uint8_t Data);

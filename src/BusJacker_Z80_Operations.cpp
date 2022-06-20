@@ -89,6 +89,8 @@ uint8_t getControlReg(void)
     return ControlReg;
 }
 
+// Stop system to take control with a BUS Request
+
 void startBUSRQ(void)
 {
     setMaskBit_OFF_Reg(mask_BUSRQ, &ControlReg);
@@ -101,74 +103,60 @@ void endBUSRQ(void)
     setZXControl(ControlReg);
 }
 
-void startMEMRQ(void)
+// Memory access
+
+void startMemoryAccess_Read(void)
 {
     setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
-    setZXControl(ControlReg);
-}
-
-void endMEMRQ(void)
-{
-    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
-    setZXControl(ControlReg);
-}
-
-void startRead(void)
-{
     setMaskBit_OFF_Reg(mask_RD, &ControlReg);
     setZXControl(ControlReg);
 }
 
-void endRead(void)
+void endMemoryAccess_Read(void)
 {
+    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
     setMaskBit_ON_Reg(mask_RD, &ControlReg);
     setZXControl(ControlReg);
 }
 
-void startWrite(void)
+void startMemoryAccess_Write(void)
 {
     setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
-
     setMaskBit_OFF_Reg(mask_WR, &ControlReg);
     setZXControl(ControlReg);
 }
 
-void endWrite(void)
+void endMemoryAccess_Write(void)
 {
     setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
-
     setMaskBit_ON_Reg(mask_WR, &ControlReg);
     setZXControl(ControlReg);
 }
 
-void writeData(uint8_t data)
-{
-    startWrite();    
+void writeToDatabus(uint8_t data)
+{    
     setBUS(data);
-    pulseAccessZXDataBus();
-    endWrite();
+    sendCCTickToZXDatabus();    
 }
 
 void writeOneByteToMemory(uint16_t Address, uint8_t Data)
 {
     setAddress(Address);
     startBUSRQ();    
-    //startMEMRQ();   
-    writeData(Data);
-    //endMEMRQ();
+    startMemoryAccess_Write();     
+    writeToDatabus(Data);
+    endMemoryAccess_Write();
     endBUSRQ();
 }
 
-void writeTwoBytesToMemory(uint16_t Address, uint8_t Data)
+uint8_t reOneByteFromMemory(uint16_t Address)
 {
+    uint8_t byte;
     setAddress(Address);
-    startBUSRQ();    
-    startMEMRQ();   
-    writeData(Data);
-    
-    setAddress(Address);
-    writeData(Data);
-    
-    endMEMRQ();
-    endBUSRQ();
+    startBUSRQ();
+    startMemoryAccess_Read();
+    byte = getBUS();
+    endMemoryAccess_Read();
+    endBUSRQ;
+    return byte;
 }

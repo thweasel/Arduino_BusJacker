@@ -51,5 +51,5 @@ uint8_t getBUS(void);                   // API
 void setZXControl(uint8_t byte);        // API
 void setZXAddrLo(uint8_t loByte);       // API
 void setZXAddrHi(uint8_t hiByte);       // API
-void pulseAccessZXDataBus(void);        // API
+void sendCCTickToZXDatabus(void);        // API
 

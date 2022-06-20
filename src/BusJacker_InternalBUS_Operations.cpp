@@ -188,7 +188,7 @@ void setZXAddrHi(uint8_t hiByte)
     }
 }
 
-void pulseAccessZXDataBus(void)
+void sendCCTickToZXDatabus(void)
 {
     sendCCTickToCCAddr(CCAddr_ZX_DATABUS);
 }
