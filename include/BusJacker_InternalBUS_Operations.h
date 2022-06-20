@@ -38,13 +38,13 @@ void sendCCTick(void);                      // HIDE?
 void sendCCTickToCCAddr(uint8_t CCAddr);    // HIDE?
 
 // BUS write Methods
-void setBUS(uint8_t byte);              // API
-void clearBUS(void);                    // API -- HIDE?
+void setSregOut(uint8_t byte);              // API
+void clearSregOut(void);                    // API -- HIDE?
 
 // BUS read Methods
-void loadDATA_IN_SREG(void);            // HIDE?
-void setDATA_IN_Shift(void);            // HIDE?
-uint8_t getBUS(void);                   // API
+void loadSregIn(void);            // HIDE?
+uint8_t getDataFromSregIn(void);            // HIDE?
+uint8_t getSregInData(void);                   // API
 
 // ZX Register Methods
 

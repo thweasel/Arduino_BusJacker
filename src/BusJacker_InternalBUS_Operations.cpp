@@ -40,7 +40,7 @@ void setup_SREG_pins(void)
 
     digitalWrite(ShiftLoad_DATA_IN, HIGH);
     digitalWrite(DATA_OUT, HIGH);
-    clearBUS();
+    clearSregOut();
 }
 
 void setup_BUSJacker(void)
@@ -84,7 +84,7 @@ void sendCCTickToCCAddr(uint8_t CCAddr)
     sendCCTick();
 }
 
-void setBUS(uint8_t byte)
+void setSregOut(uint8_t byte)
 {
     setCC_AddrLines(CCAddr_SREG_BUS_OUT);
     for (int i = 8; i > 0; --i)
@@ -105,38 +105,27 @@ void setBUS(uint8_t byte)
     return;
 }
 
-void clearBUS(void)
+void clearSregOut(void)
 {
-    setBUS(255);
+    setSregOut(255);
 }
 
-void loadDATA_IN_SREG(void)
+void loadSregIn(void)
 {
     //digitalWrite(ShiftLoad_DATA_IN, DATA_IN_LOAD);
+    //clearSregOut();
     bitClear(PORTC,ShiftLoad_DATA_IN-14);
     sendCCTickToCCAddr(CCAddr_SREG_BUS_IN);
-
-    // DEBUG
-    //Serial.print("  loadDATA_IN_SREG");
-}
-
-void setDATA_IN_Shift(void)
-{
-    //digitalWrite(ShiftLoad_DATA_IN, DATA_IN_SHIFT);
     bitSet(PORTC,ShiftLoad_DATA_IN-14);
-
     // DEBUG
-    //Serial.print("  setDATA_IN_Shift");
+    //Serial.print("  loadSregIn");
 }
 
-uint8_t getBUS(void)
+uint8_t getDataFromSregIn(void)
 {
-    // Load the ShiftReg
-    loadDATA_IN_SREG();
-
-    // Read in the ShiftReg
+    //bitSet(PORTC,ShiftLoad_DATA_IN-14);
     setCC_AddrLines(CCAddr_SREG_BUS_IN);
-    setDATA_IN_Shift();
+
     uint8_t byte = 0;
     for (int i = 0; i < 8; i++)
     {
@@ -144,17 +133,24 @@ uint8_t getBUS(void)
         byte |= digitalRead(DATA_IN);
         sendCCTick();
     }
-    // DEBUG
-    //Serial.print("  getBus: ");
-    //Serial.print(byte);
 
-    loadDATA_IN_SREG();
     return byte;
+
+}
+
+uint8_t getSregInData(void)
+{
+    // Load the ShiftReg
+    loadSregIn();
+
+    // Read in the ShiftReg
+    return getDataFromSregIn();
+
 }
 
 void setZXControl(uint8_t byte)
 {
-    setBUS(byte);
+    setSregOut(byte);
     sendCCTickToCCAddr(CCAddr_ZX_ADDR_CONTROL);
 
     if (consoleDEBUG)
@@ -166,7 +162,7 @@ void setZXControl(uint8_t byte)
 
 void setZXAddrLo(uint8_t loByte)
 {
-    setBUS(loByte);
+    setSregOut(loByte);
     sendCCTickToCCAddr(CCAddr_ZX_ADDR_HI);
 
     if (consoleDEBUG)
@@ -178,7 +174,7 @@ void setZXAddrLo(uint8_t loByte)
 
 void setZXAddrHi(uint8_t hiByte)
 {
-    setBUS(hiByte);
+    setSregOut(hiByte);
     sendCCTickToCCAddr(CCAddr_ZX_ADDR_LO);
 
     if (consoleDEBUG)

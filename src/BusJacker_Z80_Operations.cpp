@@ -114,8 +114,8 @@ void startMemoryAccess_Read(void)
 
 void endMemoryAccess_Read(void)
 {
-    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
     setMaskBit_ON_Reg(mask_RD, &ControlReg);
+    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
     setZXControl(ControlReg);
 }
 
@@ -135,7 +135,7 @@ void endMemoryAccess_Write(void)
 
 void writeToDatabus(uint8_t data)
 {    
-    setBUS(data);
+    setSregOut(data);
     sendCCTickToZXDatabus();    
 }
 
@@ -155,8 +155,13 @@ uint8_t readOneByteFromMemory(uint16_t Address)
     setAddress(Address);
     startBUSRQ();
     startMemoryAccess_Read();
-    byte = getBUS();
+    
+    clearSregOut(); // stop the SregOut putting data on the BUS (no OE)
+    loadSregIn();
+    
     endMemoryAccess_Read();
-    endBUSRQ;
+    
+    endBUSRQ();
+    byte = getDataFromSregIn();
     return byte;
 }
