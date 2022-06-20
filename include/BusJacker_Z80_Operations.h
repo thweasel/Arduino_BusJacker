@@ -34,3 +34,5 @@ void writeToDatabus(uint8_t data);
 // Memory methods
 
 void writeOneByteToMemory(uint16_t Address, uint8_t Data);
+
+uint8_t readOneByteFromMemory(uint16_t Address);

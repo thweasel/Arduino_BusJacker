@@ -149,7 +149,7 @@ void writeOneByteToMemory(uint16_t Address, uint8_t Data)
     endBUSRQ();
 }
 
-uint8_t reOneByteFromMemory(uint16_t Address)
+uint8_t readOneByteFromMemory(uint16_t Address)
 {
     uint8_t byte;
     setAddress(Address);

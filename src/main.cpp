@@ -127,6 +127,24 @@ void joker(void)
     writeOneByteToMemory(23291-128,B00100000);
 }
 
+void readMemoryTest()
+{
+  uint16_t address = 0x01;
+  uint8_t aByte;
+
+
+  aByte = readOneByteFromMemory(address);
+
+  Serial.print("\n memoryRead: ");
+  Serial.print(address);
+  Serial.print(" - ");
+  Serial.print(aByte);
+
+
+}
+
+
+
 void setup()
 {
   // put your setup code here, to run once:
