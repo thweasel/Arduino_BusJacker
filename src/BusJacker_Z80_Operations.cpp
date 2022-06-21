@@ -5,10 +5,10 @@
 #define mask_RD B00000100
 #define mask_WR B00001000
 
-// Maintain a runtime Model of the BusJacker, all lines default to High
-uint8_t ControlReg = 0xFF,
-        AddressHiReg = 0xFF,
-        AddressLoReg = 0xFF;
+// Maintain a runtime Model of the BusJacker registers, all lines default to High
+uint8_t RegControlLines_Out = 0xFF,
+        RegAddrHi_Out = 0xFF,
+        RegAddrLo_Out = 0xFF;
 
 //
 //  Address BUS methods
@@ -16,42 +16,32 @@ uint8_t ControlReg = 0xFF,
 
 uint8_t getAddressHiReg(void)
 {
-    return AddressHiReg;
+    return RegAddrHi_Out;
 }
 
 uint8_t getAddressLoReg(void)
 {
-    return AddressLoReg;
+    return RegAddrLo_Out;
 }
 
 uint16_t getAddress(void)
 {
-    uint16_t temp = (uint16_t)AddressHiReg;
+    uint16_t temp = (uint16_t)RegAddrHi_Out;
     temp >>= 8;
-    temp |= AddressLoReg;
+    temp |= RegAddrLo_Out;
     return temp;
 }
 
 void setAddressHiByte(uint8_t AddressHi)
 {
-    AddressHiReg = AddressHi;
+    RegAddrHi_Out = AddressHi;
     setRegAddrHi_Out(AddressHi);
-
-    //Serial.print("\nAddressHiReg: ");
-    //displayByte(AddressHiReg);
-
-    return;
 }
 
 void setAddressLoByte(uint8_t AddressLo)
 {
-    AddressLoReg = AddressLo;
-    setRegAddrLo_Out(AddressLoReg);
-
-    //Serial.print("\nAddressLoReg: ");
-    //displayByte(AddressLoReg);
-
-    return;
+    RegAddrLo_Out = AddressLo;
+    setRegAddrLo_Out(RegAddrLo_Out);
 }
 
 void setAddress(uint16_t Address)
@@ -59,7 +49,6 @@ void setAddress(uint16_t Address)
     setAddressLoByte((uint8_t)Address);
     Address >>= 8;
     setAddressHiByte((uint8_t)Address);
-    return;
 }
 
 void setAddressBUS_Passive(void)
@@ -75,62 +64,60 @@ void setAddressBUS_Passive(void)
 void setMaskedBits_ON(uint8_t mask, uint8_t *reg)
 {
     *reg |= mask;
-    return;
 }
 
 void setMaskedBits_OFF(uint8_t mask, uint8_t *reg)
 {
     *reg ^= mask;
-    return;
 }
 
 uint8_t getControlReg(void)
 {
-    return ControlReg;
+    return RegControlLines_Out;
 }
 
-// Stop system to take control with a BUS Request
+// Stop system to take control with a BUS Request (BUSRQ)
 
 void startBUSRQ(void)
 {
-    setMaskedBits_OFF(mask_BUSRQ, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_OFF(mask_BUSRQ, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 void endBUSRQ(void)
 {
-    setMaskedBits_ON(mask_BUSRQ, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_ON(mask_BUSRQ, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 // Memory access
 
 void startMemoryAccess_Read(void)
 {
-    setMaskedBits_OFF(mask_MEMRQ, &ControlReg);
-    setMaskedBits_OFF(mask_RD, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_OFF(mask_MEMRQ, &RegControlLines_Out);
+    setMaskedBits_OFF(mask_RD, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 void endMemoryAccess_Read(void)
 {
-    setMaskedBits_ON(mask_RD, &ControlReg);
-    setMaskedBits_ON(mask_MEMRQ, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_ON(mask_RD, &RegControlLines_Out);
+    setMaskedBits_ON(mask_MEMRQ, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 void startMemoryAccess_Write(void)
 {
-    setMaskedBits_OFF(mask_MEMRQ, &ControlReg);
-    setMaskedBits_OFF(mask_WR, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_OFF(mask_MEMRQ, &RegControlLines_Out);
+    setMaskedBits_OFF(mask_WR, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 void endMemoryAccess_Write(void)
 {
-    setMaskedBits_ON(mask_MEMRQ, &ControlReg);
-    setMaskedBits_ON(mask_WR, &ControlReg);
-    setRegControlLines_Out(ControlReg);
+    setMaskedBits_ON(mask_MEMRQ, &RegControlLines_Out);
+    setMaskedBits_ON(mask_WR, &RegControlLines_Out);
+    setRegControlLines_Out(RegControlLines_Out);
 }
 
 void writeToHostDatabus(uint8_t data)
@@ -144,7 +131,9 @@ void writeByteToHostMemory(uint16_t Address, uint8_t Data)
     setAddress(Address);
     startBUSRQ();    
     startMemoryAccess_Write();     
+    
     writeToHostDatabus(Data);
+    
     endMemoryAccess_Write();
     endBUSRQ();
 }
