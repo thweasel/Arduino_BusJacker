@@ -133,7 +133,7 @@ void testReadMemory()
   uint16_t bytes = 10; // 16384;
   uint8_t aByte;
 
-  for (int i = address; i < (address + bytes); i++)
+  for (uint16_t i = address; i < (address + bytes); i++)
   {
     aByte = readOneByteFromMemory(i);
     Serial.print("\n memoryRead: ");
