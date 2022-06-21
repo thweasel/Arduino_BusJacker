@@ -55,25 +55,14 @@ void setup_BUSJacker(void)
 
 void setCC_AddrLines(uint8_t CCAddr)
 {
-    // DEBUG
-    //Serial.print("\nCC_ADDR: ");
-    //Serial.print(CCAddr);
-
     CC_PORT = CC_PORT & CCAddr_MASK;
 
     CCAddr <<= 5;
     CC_PORT |= CCAddr;
-    return;
 }
 
 void sendCCPulse(void)
-{
-    //digitalWrite(CC_TICK, HIGH);
-    //digitalWrite(CC_TICK, LOW);
-    
-    //delay(20);
-    //delayMicroseconds(2);
-    
+{   
     bitSet(PORTD, CC_TICK);
     bitClear(PORTD, CC_TICK);
 }
@@ -102,7 +91,6 @@ void setSregBus_Out(uint8_t byte)
         sendCCPulse();
         byte <<= 1;
     }
-    return;
 }
 
 void clearSregBus_Out(void)
@@ -112,18 +100,13 @@ void clearSregBus_Out(void)
 
 void loadSregBus_In(void)
 {
-    //digitalWrite(ShiftLoad_DATA_IN, DATA_IN_LOAD);
-    //clearSregOut();
     bitClear(PORTC,ShiftLoad_DATA_IN-14);
     sendCCPulseToCCAddr(CCAddr_SRegBus_In);
     bitSet(PORTC,ShiftLoad_DATA_IN-14);
-    // DEBUG
-    //Serial.print("  loadSregBus_In");
 }
 
 uint8_t getDataFromSregBus_In(void)
 {
-    //bitSet(PORTC,ShiftLoad_DATA_IN-14);
     setCC_AddrLines(CCAddr_SRegBus_In);
 
     uint8_t byte = 0;
@@ -133,19 +116,13 @@ uint8_t getDataFromSregBus_In(void)
         byte |= digitalRead(DATA_IN);
         sendCCPulse();
     }
-
     return byte;
-
 }
 
 uint8_t loadAndGetDataFromSregBus_In(void)
 {
-    // Load the ShiftReg
     loadSregBus_In();
-
-    // Read in the ShiftReg
     return getDataFromSregBus_In();
-
 }
 
 void setRegControlLines_Out(uint8_t byte)
