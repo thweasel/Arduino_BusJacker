@@ -35,7 +35,7 @@ uint16_t getAddress(void)
 void setAddressHiByte(uint8_t AddressHi)
 {
     AddressHiReg = AddressHi;
-    setZXAddrHi(AddressHi);
+    setRegAddrHi_Out(AddressHi);
 
     //Serial.print("\nAddressHiReg: ");
     //displayByte(AddressHiReg);
@@ -46,7 +46,7 @@ void setAddressHiByte(uint8_t AddressHi)
 void setAddressLoByte(uint8_t AddressLo)
 {
     AddressLoReg = AddressLo;
-    setZXAddrLo(AddressLoReg);
+    setRegAddrLo_Out(AddressLoReg);
 
     //Serial.print("\nAddressLoReg: ");
     //displayByte(AddressLoReg);
@@ -94,13 +94,13 @@ uint8_t getControlReg(void)
 void startBUSRQ(void)
 {
     setMaskBit_OFF_Reg(mask_BUSRQ, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 void endBUSRQ(void)
 {
     setMaskBit_ON_Reg(mask_BUSRQ, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 // Memory access
@@ -109,34 +109,34 @@ void startMemoryAccess_Read(void)
 {
     setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
     setMaskBit_OFF_Reg(mask_RD, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 void endMemoryAccess_Read(void)
 {
     setMaskBit_ON_Reg(mask_RD, &ControlReg);
     setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 void startMemoryAccess_Write(void)
 {
     setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
     setMaskBit_OFF_Reg(mask_WR, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 void endMemoryAccess_Write(void)
 {
     setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
     setMaskBit_ON_Reg(mask_WR, &ControlReg);
-    setZXControl(ControlReg);
+    setRegControlLines_Out(ControlReg);
 }
 
 void writeToDatabus(uint8_t data)
 {    
-    setSregOut(data);
-    sendCCTickToZXDatabus();    
+    setSregBus_Out(data);
+    sendCCPulseToHostSystem();    
 }
 
 void writeOneByteToMemory(uint16_t Address, uint8_t Data)
@@ -156,12 +156,12 @@ uint8_t readOneByteFromMemory(uint16_t Address)
     startBUSRQ();
     startMemoryAccess_Read();
     
-    clearSregOut(); // stop the SregOut putting data on the BUS (no OE)
-    loadSregIn();
+    clearSregBus_Out(); // stop the SregOut putting data on the BUS (no OE)
+    loadSregBus_In();
     
     endMemoryAccess_Read();
     
     endBUSRQ();
-    byte = getDataFromSregIn();
+    byte = getDataFromSregBus_In();
     return byte;
 }

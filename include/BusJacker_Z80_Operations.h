@@ -1,6 +1,6 @@
 #include <Arduino.h> // Microcontroller dependent
 
-#include "BusJacker_InternalBUS_Operations.h"
+#include "BusJacker_Internal_Operations.h"
 
 //
 //  Address BUS methods

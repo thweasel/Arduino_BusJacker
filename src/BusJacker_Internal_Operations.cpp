@@ -1,4 +1,4 @@
-#include "BusJacker_InternalBUS_Operations.h"
+#include "BusJacker_Internal_Operations.h"
 
 #define consoleDEBUG 0
 
@@ -19,7 +19,7 @@ void displayByte(uint8_t byte)
     Serial.print("]7 ");
 }
 
-void setup_CC_Pins(void)
+void setupClockControlPins(void)
 {
     pinMode(CC_A0, OUTPUT);
     pinMode(CC_A1, OUTPUT);
@@ -32,7 +32,7 @@ void setup_CC_Pins(void)
     digitalWrite(CC_TICK, LOW);
 }
 
-void setup_SREG_pins(void)
+void setupSregBusPins(void)
 {
     pinMode(ShiftLoad_DATA_IN, OUTPUT);
     pinMode(DATA_IN, INPUT);
@@ -40,17 +40,17 @@ void setup_SREG_pins(void)
 
     digitalWrite(ShiftLoad_DATA_IN, HIGH);
     digitalWrite(DATA_OUT, HIGH);
-    clearSregOut();
+    clearSregBus_Out();
 }
 
 void setup_BUSJacker(void)
 {
-    setup_CC_Pins();
-    setup_SREG_pins();
+    setupClockControlPins();
+    setupSregBusPins();
 
-    setZXControl(0xFF);
-    setZXAddrLo(0xFF);
-    setZXAddrHi(0xFF);
+    setRegControlLines_Out(0xFF);
+    setRegAddrLo_Out(0xFF);
+    setRegAddrHi_Out(0xFF);
 }
 
 void setCC_AddrLines(uint8_t CCAddr)
@@ -66,7 +66,7 @@ void setCC_AddrLines(uint8_t CCAddr)
     return;
 }
 
-void sendCCTick(void)
+void sendCCPulse(void)
 {
     //digitalWrite(CC_TICK, HIGH);
     //digitalWrite(CC_TICK, LOW);
@@ -78,15 +78,15 @@ void sendCCTick(void)
     bitClear(PORTD, CC_TICK);
 }
 
-void sendCCTickToCCAddr(uint8_t CCAddr)
+void sendCCPulseToCCAddr(uint8_t CCAddr)
 {
     setCC_AddrLines(CCAddr);
-    sendCCTick();
+    sendCCPulse();
 }
 
-void setSregOut(uint8_t byte)
+void setSregBus_Out(uint8_t byte)
 {
-    setCC_AddrLines(CCAddr_SREG_BUS_OUT);
+    setCC_AddrLines(CCAddr_SRegBus_Out);
     for (int i = 8; i > 0; --i)
     {
         if (byte & 128)
@@ -99,59 +99,59 @@ void setSregOut(uint8_t byte)
             //digitalWrite(DATA_OUT, LOW);
             bitClear(PORTC,DATA_OUT-14);
         }
-        sendCCTick();
+        sendCCPulse();
         byte <<= 1;
     }
     return;
 }
 
-void clearSregOut(void)
+void clearSregBus_Out(void)
 {
-    setSregOut(255);
+    setSregBus_Out(255);
 }
 
-void loadSregIn(void)
+void loadSregBus_In(void)
 {
     //digitalWrite(ShiftLoad_DATA_IN, DATA_IN_LOAD);
     //clearSregOut();
     bitClear(PORTC,ShiftLoad_DATA_IN-14);
-    sendCCTickToCCAddr(CCAddr_SREG_BUS_IN);
+    sendCCPulseToCCAddr(CCAddr_SRegBus_In);
     bitSet(PORTC,ShiftLoad_DATA_IN-14);
     // DEBUG
-    //Serial.print("  loadSregIn");
+    //Serial.print("  loadSregBus_In");
 }
 
-uint8_t getDataFromSregIn(void)
+uint8_t getDataFromSregBus_In(void)
 {
     //bitSet(PORTC,ShiftLoad_DATA_IN-14);
-    setCC_AddrLines(CCAddr_SREG_BUS_IN);
+    setCC_AddrLines(CCAddr_SRegBus_In);
 
     uint8_t byte = 0;
     for (int i = 0; i < 8; i++)
     {
         byte <<= 1;
         byte |= digitalRead(DATA_IN);
-        sendCCTick();
+        sendCCPulse();
     }
 
     return byte;
 
 }
 
-uint8_t getSregInData(void)
+uint8_t loadAndGetDataFromSregBus_In(void)
 {
     // Load the ShiftReg
-    loadSregIn();
+    loadSregBus_In();
 
     // Read in the ShiftReg
-    return getDataFromSregIn();
+    return getDataFromSregBus_In();
 
 }
 
-void setZXControl(uint8_t byte)
+void setRegControlLines_Out(uint8_t byte)
 {
-    setSregOut(byte);
-    sendCCTickToCCAddr(CCAddr_ZX_ADDR_CONTROL);
+    setSregBus_Out(byte);
+    sendCCPulseToCCAddr(CCAddr_RegControlLines_Out);
 
     if (consoleDEBUG)
     {
@@ -160,10 +160,10 @@ void setZXControl(uint8_t byte)
     }
 }
 
-void setZXAddrLo(uint8_t loByte)
+void setRegAddrLo_Out(uint8_t loByte)
 {
-    setSregOut(loByte);
-    sendCCTickToCCAddr(CCAddr_ZX_ADDR_HI);
+    setSregBus_Out(loByte);
+    sendCCPulseToCCAddr(CCAddr_RegAddrHi_Out);
 
     if (consoleDEBUG)
     {
@@ -172,10 +172,10 @@ void setZXAddrLo(uint8_t loByte)
     }
 }
 
-void setZXAddrHi(uint8_t hiByte)
+void setRegAddrHi_Out(uint8_t hiByte)
 {
-    setSregOut(hiByte);
-    sendCCTickToCCAddr(CCAddr_ZX_ADDR_LO);
+    setSregBus_Out(hiByte);
+    sendCCPulseToCCAddr(CCAddr_RegAddrLo_Out);
 
     if (consoleDEBUG)
     {
@@ -184,7 +184,7 @@ void setZXAddrHi(uint8_t hiByte)
     }
 }
 
-void sendCCTickToZXDatabus(void)
+void sendCCPulseToHostSystem(void)
 {
-    sendCCTickToCCAddr(CCAddr_ZX_DATABUS);
+    sendCCPulseToCCAddr(CCAddr_HostSystem);
 }

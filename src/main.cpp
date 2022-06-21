@@ -7,13 +7,13 @@ void testInternalBUS(void)
   Serial.print("\n testInternalBUS 0>1>2>3>4>5>6>7");
   for (int i = 1; i < 255; i = i * 2)
   {
-    setSregOut(i);
-    getSregInData();
+    setSregBus_Out(i);
+    loadAndGetDataFromSregBus_In();
     delay(500);
   }
 
   delay(1000);
-  clearSregOut();
+  clearSregBus_Out();
   delay(1000);
 }
 
@@ -22,11 +22,11 @@ void testZXControl(void)
   Serial.print("\n testZXControl 0>1>2>3>4>5>6>7");
   for (int i = 1; i < 255; i = i * 2)
   {
-    setZXControl(i);
+    setRegControlLines_Out(i);
     delay(500);
   }
   delay(1000);
-  setZXControl(0);
+  setRegControlLines_Out(0);
   delay(1000);
   return;
 }
@@ -36,11 +36,11 @@ void testZXAddrLo(void)
   Serial.print("\n testZXAddrLo 0>1>2>3>4>5>6>7");
   for (int i = 1; i < 255; i = i * 2)
   {
-    setZXAddrLo(i);
+    setRegAddrLo_Out(i);
     delay(500);
   }
   delay(1000);
-  setZXAddrLo(0);
+  setRegAddrLo_Out(0);
   delay(1000);
   return;
 }
@@ -50,11 +50,11 @@ void testZXAddrHi(void)
   Serial.print("\n testZXAddrHi 0>1>2>3>4>5>6>7");
   for (int i = 1; i < 255; i = i * 2)
   {
-    setZXAddrHi(i);
+    setRegAddrHi_Out(i);
     delay(500);
   }
   delay(1000);
-  setZXAddrHi(0);
+  setRegAddrHi_Out(0);
   delay(1000);
   return;
 }
@@ -84,14 +84,14 @@ void testSREGLoopback(void)
     Serial.print(" [");
     Serial.print((char)c);
     Serial.print("]");
-    setSregOut(c);
+    setSregBus_Out(c);
     delay(2);
   }
   else
   {
     // c = shiftIn(DATA_IN, CLOCK, MSBFIRST);
     Serial.print("\nReadBUS ");
-    c = getSregInData();
+    c = loadAndGetDataFromSregBus_In();
     Serial.print("Input ");
     Serial.print(c);
     Serial.print(" [");
