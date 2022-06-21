@@ -184,7 +184,7 @@ void setRegAddrHi_Out(uint8_t hiByte)
     }
 }
 
-void sendCCPulseToHostSystem(void)
+void sendCCPulseToHost(void)
 {
     sendCCPulseToCCAddr(CCAddr_HostSystem);
 }

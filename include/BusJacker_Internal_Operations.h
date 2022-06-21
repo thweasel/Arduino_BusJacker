@@ -53,5 +53,5 @@ uint8_t loadAndGetDataFromSregBus_In(void);                   // API
 void setRegControlLines_Out(uint8_t byte);        // API
 void setRegAddrLo_Out(uint8_t loByte);       // API
 void setRegAddrHi_Out(uint8_t hiByte);       // API
-void sendCCPulseToHostSystem(void);        // API
+void sendCCPulseToHost(void);        // API
 

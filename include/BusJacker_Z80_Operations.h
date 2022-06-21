@@ -29,10 +29,10 @@ void endMemoryAccess_Read(void);
 void startMemoryAccess_Write(void);
 void endMemoryAccess_Write(void);
 
-void writeToDatabus(uint8_t data);
+void writeToHostDatabus(uint8_t data);
 
 // Memory methods
 
-void writeOneByteToMemory(uint16_t Address, uint8_t Data);
+void writeByteToHostMemory(uint16_t Address, uint8_t Data);
 
-uint8_t readOneByteFromMemory(uint16_t Address);
+uint8_t readByteFromHostMemory(uint16_t Address);

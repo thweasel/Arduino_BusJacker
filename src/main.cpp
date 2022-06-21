@@ -103,28 +103,28 @@ void testSREGLoopback(void)
 
 void testMemoryWriteSequence(void)
 {
-  writeOneByteToMemory(0xFF00, 0xF0);
+  writeByteToHostMemory(0xFF00, 0xF0);
   delay(500);
-  writeOneByteToMemory(0x00FF, 0x0F);
+  writeByteToHostMemory(0x00FF, 0x0F);
   delay(500);
 }
 
 void joker(void)
 {
-  writeOneByteToMemory(23295 - 32, B00010000);
-  writeOneByteToMemory(23294, B00010000);
-  writeOneByteToMemory(23293, B00010000);
-  writeOneByteToMemory(23292, B00010000);
-  writeOneByteToMemory(23291 - 32, B00010000);
+  writeByteToHostMemory(23295 - 32, B00010000);
+  writeByteToHostMemory(23294, B00010000);
+  writeByteToHostMemory(23293, B00010000);
+  writeByteToHostMemory(23292, B00010000);
+  writeByteToHostMemory(23291 - 32, B00010000);
 
-  writeOneByteToMemory(23294 - 96, B00001000);
-  writeOneByteToMemory(23292 - 96, B00001000);
+  writeByteToHostMemory(23294 - 96, B00001000);
+  writeByteToHostMemory(23292 - 96, B00001000);
 
-  writeOneByteToMemory(23295 - 128, B00100000);
-  writeOneByteToMemory(23294 - 160, B00100000);
-  writeOneByteToMemory(23293 - 160, B00100000);
-  writeOneByteToMemory(23292 - 160, B00100000);
-  writeOneByteToMemory(23291 - 128, B00100000);
+  writeByteToHostMemory(23295 - 128, B00100000);
+  writeByteToHostMemory(23294 - 160, B00100000);
+  writeByteToHostMemory(23293 - 160, B00100000);
+  writeByteToHostMemory(23292 - 160, B00100000);
+  writeByteToHostMemory(23291 - 128, B00100000);
 }
 
 void testReadMemory()
@@ -135,7 +135,7 @@ void testReadMemory()
 
   for (uint16_t i = address; i < (address + bytes); i++)
   {
-    aByte = readOneByteFromMemory(i);
+    aByte = readByteFromHostMemory(i);
     Serial.print("\n memoryRead: ");
     Serial.print(i);
     Serial.print(" - ");
@@ -147,13 +147,13 @@ void testReadMemory()
 
 void fujiWrite(void)
 {
-  writeOneByteToMemory(53184, 'F');
-  writeOneByteToMemory(53185, 'U');
-  writeOneByteToMemory(53186, 'J');
-  writeOneByteToMemory(53187, 'I');
-  writeOneByteToMemory(53188, 'N');
-  writeOneByteToMemory(53189, 'E');
-  writeOneByteToMemory(53190, 'T');
+  writeByteToHostMemory(53184, 'F');
+  writeByteToHostMemory(53185, 'U');
+  writeByteToHostMemory(53186, 'J');
+  writeByteToHostMemory(53187, 'I');
+  writeByteToHostMemory(53188, 'N');
+  writeByteToHostMemory(53189, 'E');
+  writeByteToHostMemory(53190, 'T');
 }
 
 void setup()

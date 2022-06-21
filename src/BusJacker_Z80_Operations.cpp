@@ -72,13 +72,13 @@ void setAddressBUS_Passive(void)
 //  Control BUS methods
 //
 
-void setMaskBit_ON_Reg(uint8_t mask, uint8_t *reg)
+void setMaskedBits_ON(uint8_t mask, uint8_t *reg)
 {
     *reg |= mask;
     return;
 }
 
-void setMaskBit_OFF_Reg(uint8_t mask, uint8_t *reg)
+void setMaskedBits_OFF(uint8_t mask, uint8_t *reg)
 {
     *reg ^= mask;
     return;
@@ -93,13 +93,13 @@ uint8_t getControlReg(void)
 
 void startBUSRQ(void)
 {
-    setMaskBit_OFF_Reg(mask_BUSRQ, &ControlReg);
+    setMaskedBits_OFF(mask_BUSRQ, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
 void endBUSRQ(void)
 {
-    setMaskBit_ON_Reg(mask_BUSRQ, &ControlReg);
+    setMaskedBits_ON(mask_BUSRQ, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
@@ -107,51 +107,50 @@ void endBUSRQ(void)
 
 void startMemoryAccess_Read(void)
 {
-    setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
-    setMaskBit_OFF_Reg(mask_RD, &ControlReg);
+    setMaskedBits_OFF(mask_MEMRQ, &ControlReg);
+    setMaskedBits_OFF(mask_RD, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
 void endMemoryAccess_Read(void)
 {
-    setMaskBit_ON_Reg(mask_RD, &ControlReg);
-    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
+    setMaskedBits_ON(mask_RD, &ControlReg);
+    setMaskedBits_ON(mask_MEMRQ, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
 void startMemoryAccess_Write(void)
 {
-    setMaskBit_OFF_Reg(mask_MEMRQ, &ControlReg);
-    setMaskBit_OFF_Reg(mask_WR, &ControlReg);
+    setMaskedBits_OFF(mask_MEMRQ, &ControlReg);
+    setMaskedBits_OFF(mask_WR, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
 void endMemoryAccess_Write(void)
 {
-    setMaskBit_ON_Reg(mask_MEMRQ, &ControlReg);
-    setMaskBit_ON_Reg(mask_WR, &ControlReg);
+    setMaskedBits_ON(mask_MEMRQ, &ControlReg);
+    setMaskedBits_ON(mask_WR, &ControlReg);
     setRegControlLines_Out(ControlReg);
 }
 
-void writeToDatabus(uint8_t data)
+void writeToHostDatabus(uint8_t data)
 {    
     setSregBus_Out(data);
-    sendCCPulseToHostSystem();    
+    sendCCPulseToHost();    
 }
 
-void writeOneByteToMemory(uint16_t Address, uint8_t Data)
+void writeByteToHostMemory(uint16_t Address, uint8_t Data)
 {
     setAddress(Address);
     startBUSRQ();    
     startMemoryAccess_Write();     
-    writeToDatabus(Data);
+    writeToHostDatabus(Data);
     endMemoryAccess_Write();
     endBUSRQ();
 }
 
-uint8_t readOneByteFromMemory(uint16_t Address)
+uint8_t readByteFromHostMemory(uint16_t Address)
 {
-    uint8_t byte;
     setAddress(Address);
     startBUSRQ();
     startMemoryAccess_Read();
@@ -159,9 +158,8 @@ uint8_t readOneByteFromMemory(uint16_t Address)
     clearSregBus_Out(); // stop the SregOut putting data on the BUS (no OE)
     loadSregBus_In();
     
-    endMemoryAccess_Read();
-    
+    endMemoryAccess_Read();    
     endBUSRQ();
-    byte = getDataFromSregBus_In();
-    return byte;
+
+    return getDataFromSregBus_In();
 }
