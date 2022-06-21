@@ -34,12 +34,12 @@ void setupClockControlPins(void)
 
 void setupSregBusPins(void)
 {
-    pinMode(ShiftLoad_DATA_IN, OUTPUT);
-    pinMode(DATA_IN, INPUT);
-    pinMode(DATA_OUT, OUTPUT);
+    pinMode(SRegBus_In_ShiftLoadPin, OUTPUT);
+    pinMode(SRegBus_In_DataPin, INPUT);
+    pinMode(SRegBus_Out_DataPin, OUTPUT);
 
-    digitalWrite(ShiftLoad_DATA_IN, HIGH);
-    digitalWrite(DATA_OUT, HIGH);
+    digitalWrite(SRegBus_In_ShiftLoadPin, HIGH);
+    digitalWrite(SRegBus_Out_DataPin, HIGH);
     clearSregBus_Out();
 }
 
@@ -62,7 +62,7 @@ void setCC_AddrLines(uint8_t CCAddr)
 }
 
 void sendCCPulse(void)
-{   
+{
     bitSet(PORTD, CC_TICK);
     bitClear(PORTD, CC_TICK);
 }
@@ -80,13 +80,13 @@ void setSregBus_Out(uint8_t byte)
     {
         if (byte & 128)
         {
-            //digitalWrite(DATA_OUT, HIGH);
-            bitSet(PORTC,DATA_OUT-14);
+            // digitalWrite(SregBus_Out_DATA, HIGH);
+            bitSet(SRegBus_PORT, SRegBus_Out_DataBit);
         }
         else
         {
-            //digitalWrite(DATA_OUT, LOW);
-            bitClear(PORTC,DATA_OUT-14);
+            // digitalWrite(SregBus_Out_DATA, LOW);
+            bitClear(SRegBus_PORT, SRegBus_Out_DataBit);
         }
         sendCCPulse();
         byte <<= 1;
@@ -100,9 +100,9 @@ void clearSregBus_Out(void)
 
 void loadSregBus_In(void)
 {
-    bitClear(PORTC,ShiftLoad_DATA_IN-14);
+    bitClear(SRegBus_PORT, SRegBus_In_ShiftLoadBit);
     sendCCPulseToCCAddr(CCAddr_SRegBus_In);
-    bitSet(PORTC,ShiftLoad_DATA_IN-14);
+    bitSet(SRegBus_PORT, SRegBus_In_ShiftLoadBit);
 }
 
 uint8_t getDataFromSregBus_In(void)
@@ -113,7 +113,8 @@ uint8_t getDataFromSregBus_In(void)
     for (int i = 0; i < 8; i++)
     {
         byte <<= 1;
-        byte |= digitalRead(DATA_IN);
+        // byte |= digitalRead(SRegBus_In_DataPin);
+        byte |= bitRead(SRegBus_PORT, SRegBus_Out_DataBit);
         sendCCPulse();
     }
     return byte;
@@ -129,36 +130,18 @@ void setRegControlLines_Out(uint8_t byte)
 {
     setSregBus_Out(byte);
     sendCCPulseToCCAddr(CCAddr_RegControlLines_Out);
-
-    if (consoleDEBUG)
-    {
-        Serial.print("\nZX_Control: ");
-        displayByte(byte);
-    }
 }
 
 void setRegAddrLo_Out(uint8_t loByte)
 {
     setSregBus_Out(loByte);
     sendCCPulseToCCAddr(CCAddr_RegAddrHi_Out);
-
-    if (consoleDEBUG)
-    {
-        Serial.print("\nZX_AddrLo: ");
-        displayByte(loByte);
-    }
 }
 
 void setRegAddrHi_Out(uint8_t hiByte)
 {
     setSregBus_Out(hiByte);
     sendCCPulseToCCAddr(CCAddr_RegAddrLo_Out);
-
-    if (consoleDEBUG)
-    {
-        Serial.print("\nZX_AddrHi: ");
-        displayByte(hiByte);
-    }
 }
 
 void sendCCPulseToHost(void)
