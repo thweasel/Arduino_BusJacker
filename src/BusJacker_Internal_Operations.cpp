@@ -2,7 +2,7 @@
 
 #define consoleDEBUG 0
 
-void displayByte(uint8_t byte)
+void displayByteAsBits(uint8_t byte)
 {
     Serial.print(byte);
     Serial.print(" 0[");

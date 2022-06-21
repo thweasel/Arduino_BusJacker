@@ -33,7 +33,7 @@
 #define SREG_LOAD   0
 #define SREG_SHIFT  1
 
-void displayByte(uint8_t byte);
+void displayByteAsBits(uint8_t byte);
 
 // void setupSregBusPins (void); // HIDDEN
 
