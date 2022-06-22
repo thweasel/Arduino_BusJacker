@@ -24,22 +24,22 @@ void setupClockControlPins(void)
     pinMode(CC_A0, OUTPUT);
     pinMode(CC_A1, OUTPUT);
     pinMode(CC_A2, OUTPUT);
-    pinMode(CC_TICK, OUTPUT);
+    pinMode(CC_Pulse, OUTPUT);
 
     digitalWrite(CC_A0, LOW);
     digitalWrite(CC_A1, LOW);
     digitalWrite(CC_A2, LOW);
-    digitalWrite(CC_TICK, LOW);
+    digitalWrite(CC_Pulse, LOW);
 }
 
 void setupSregBusPins(void)
 {
-    pinMode(SRegBus_In_ShiftLoadPin, OUTPUT);
-    pinMode(SRegBus_In_DataPin, INPUT);
-    pinMode(SRegBus_Out_DataPin, OUTPUT);
+    pinMode(SRegBus_In_ShiftLoad_Pin, OUTPUT);
+    pinMode(SRegBus_In_Data_Pin, INPUT);
+    pinMode(SRegBus_Out_Data_Pin, OUTPUT);
 
-    digitalWrite(SRegBus_In_ShiftLoadPin, HIGH);
-    digitalWrite(SRegBus_Out_DataPin, HIGH);
+    digitalWrite(SRegBus_In_ShiftLoad_Pin, HIGH);
+    digitalWrite(SRegBus_Out_Data_Pin, HIGH);
     clearSregBus_Out();
 }
 
@@ -63,8 +63,8 @@ void setCC_AddrLines(uint8_t CCAddr)
 
 void sendCCPulse(void)
 {
-    bitSet(PORTD, CC_TICK);
-    bitClear(PORTD, CC_TICK);
+    bitSet(PORTD, CC_Pulse);
+    bitClear(PORTD, CC_Pulse);
 }
 
 void sendCCPulseToCCAddr(uint8_t CCAddr)
@@ -81,12 +81,12 @@ void setSregBus_Out(uint8_t byte)
         if (byte & 128)
         {
             // digitalWrite(SregBus_Out_DATA, HIGH);
-            bitSet(SRegBus_PORT, SRegBus_Out_DataBit);
+            bitSet(SRegBus_PORT, SRegBus_Out_Data_Bit);
         }
         else
         {
             // digitalWrite(SregBus_Out_DATA, LOW);
-            bitClear(SRegBus_PORT, SRegBus_Out_DataBit);
+            bitClear(SRegBus_PORT, SRegBus_Out_Data_Bit);
         }
         sendCCPulse();
         byte <<= 1;
@@ -100,9 +100,9 @@ void clearSregBus_Out(void)
 
 void loadSregBus_In(void)
 {
-    bitClear(SRegBus_PORT, SRegBus_In_ShiftLoadBit);
+    bitClear(SRegBus_PORT, SRegBus_In_ShiftLoad_Bit);
     sendCCPulseToCCAddr(CCAddr_SRegBus_In);
-    bitSet(SRegBus_PORT, SRegBus_In_ShiftLoadBit);
+    bitSet(SRegBus_PORT, SRegBus_In_ShiftLoad_Bit);
 }
 
 uint8_t getDataFromSregBus_In(void)
@@ -113,8 +113,8 @@ uint8_t getDataFromSregBus_In(void)
     for (int i = 0; i < 8; i++)
     {
         byte <<= 1;
-        // byte |= digitalRead(SRegBus_In_DataPin);
-        byte |= bitRead(SRegBus_PORT, SRegBus_Out_DataBit);
+        // byte |= digitalRead(SRegBus_In_Data_Pin);
+        byte |= bitRead(SRegBus_PORT, SRegBus_Out_Data_Bit);
         sendCCPulse();
     }
     return byte;
@@ -146,5 +146,5 @@ void setRegAddrHi_Out(uint8_t hiByte)
 
 void sendCCPulseToHost(void)
 {
-    sendCCPulseToCCAddr(CCAddr_HostSystem);
+    sendCCPulseToCCAddr(CCAddr_Host);
 }

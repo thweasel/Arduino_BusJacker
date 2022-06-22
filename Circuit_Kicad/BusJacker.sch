@@ -17,12 +17,12 @@ $EndDescr
 $Comp
 L 74xx_IEEE:74164 U?
 U 1 1 62A12EC5
-P 7750 5450
-F 0 "U?" H 7750 6016 50  0000 C CNN
-F 1 "74164" H 7750 5925 50  0000 C CNN
-F 2 "" H 7750 5450 50  0001 C CNN
-F 3 "" H 7750 5450 50  0001 C CNN
-	1    7750 5450
+P 7400 5450
+F 0 "U?" H 7400 6016 50  0000 C CNN
+F 1 "74164" H 7400 5925 50  0000 C CNN
+F 2 "" H 7400 5450 50  0001 C CNN
+F 3 "" H 7400 5450 50  0001 C CNN
+	1    7400 5450
 	-1   0    0    -1  
 $EndComp
 $Comp
@@ -50,12 +50,12 @@ $EndComp
 $Comp
 L 74xx:74LS138 U?
 U 1 1 62A1D21F
-P 8000 1400
-F 0 "U?" H 8000 2178 50  0000 C CNN
-F 1 "74LS138" H 8000 2087 50  0000 C CNN
-F 2 "" H 8000 1400 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS138" H 8000 1400 50  0001 C CNN
-	1    8000 1400
+P 8600 1400
+F 0 "U?" H 8600 2178 50  0000 C CNN
+F 1 "74LS138" H 8600 2087 50  0000 C CNN
+F 2 "" H 8600 1400 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS138" H 8600 1400 50  0001 C CNN
+	1    8600 1400
 	-1   0    0    -1  
 $EndComp
 Entry Wire Line
@@ -110,13 +110,13 @@ Wire Wire Line
 	6500 4000 7800 4000
 Wire Wire Line
 	7800 4100 6500 4100
-Text Notes 3750 2150 0    50   ~ 0
-ZX ADDR Hi
-Text Notes 1850 2150 0    50   ~ 0
-ZX ADDR Lo
-Text Notes 4950 6000 0    50   ~ 0
-ZX Data bus
-Text GLabel 2750 3250 0    50   Input ~ 0
+Text Notes 4000 1400 0    50   ~ 0
+RegAddrHi_Out
+Text Notes 2100 1400 0    50   ~ 0
+RegAddrLo_Out
+Text Notes 5700 6000 0    50   ~ 0
+GateDataBus
+Text GLabel 2750 3500 0    50   Input ~ 0
 ZX_WR
 Text GLabel 2750 3050 0    50   Input ~ 0
 ZX_MEMRQ
@@ -125,33 +125,33 @@ ZX_RD
 Text GLabel 2750 2950 0    50   Input ~ 0
 ZX_BUSRQ
 Text GLabel 9400 4700 2    50   Input ~ 0
-ESP_DATA_IN
+ESP_SRegBus_In_Data
 Text GLabel 9400 5450 2    50   Input ~ 0
-ESP_DATA_OUT
-Text Notes 8300 950  0    50   ~ 0
-ESP Clock Control
-Text Notes 8100 4400 1    50   ~ 0
-SREG_BUS_IN
-Text Notes 8100 6200 1    50   ~ 0
-SREG_BUS_OUT
+ESP_SRegBus_Out_Data
+Text Notes 8700 950  0    50   ~ 0
+Clock Control
+Text Notes 8700 4300 1    50   ~ 0
+SRegBus_In
+Text Notes 7750 6150 1    50   ~ 0
+SRegBus_Out\n
 Text GLabel 9400 1100 2    50   Input ~ 0
 ESP_CC_A0
 Text GLabel 9400 1200 2    50   Input ~ 0
 ESP_CC_A1
 Text GLabel 9400 1600 2    50   Input ~ 0
-ESP_CC_TICK
+ESP_CC_Pulse
 Text GLabel 9400 1300 2    50   Input ~ 0
 ESP_CC_A2
 Wire Wire Line
-	8500 1100 9400 1100
+	9100 1100 9400 1100
 Wire Wire Line
-	8300 5450 8550 5450
+	7950 5450 8550 5450
 Wire Wire Line
 	8900 4700 9400 4700
 Text GLabel 9400 2400 2    50   Input ~ 0
-ESP_ShiftLoad_DATA_IN
-Text Notes 9450 2650 0    50   ~ 0
-RD_BUS Normally high pulse\nlow to load data and clock in
+ESP_SRegBus_In_ShiftLoad
+Text Notes 9450 2700 0    50   ~ 0
+Normally high (Shift) and low only \nto Load data, Shift/Load when pulsed \nfrom the Clock Control (1_CCAddr)
 Wire Wire Line
 	6500 4700 7800 4700
 Wire Wire Line
@@ -187,7 +187,7 @@ F 3 "http://www.ti.com/lit/gpn/sn74LS374" H 5450 3450 50  0001 C CNN
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	7500 1200 6900 1200
+	8100 1200 6900 1200
 Entry Wire Line
 	6400 5600 6500 5500
 Entry Wire Line
@@ -197,13 +197,13 @@ Entry Wire Line
 Entry Wire Line
 	6400 5950 6500 5850
 Wire Wire Line
-	6500 5500 7200 5500
+	6500 5500 6850 5500
 Wire Wire Line
-	7200 5650 6500 5650
+	6850 5650 6500 5650
 Wire Wire Line
-	6500 5750 7200 5750
+	6500 5750 6850 5750
 Wire Wire Line
-	7200 5850 6500 5850
+	6850 5850 6500 5850
 Entry Wire Line
 	6400 6050 6500 5950
 Entry Wire Line
@@ -213,37 +213,35 @@ Entry Wire Line
 Entry Wire Line
 	6400 6350 6500 6250
 Wire Wire Line
-	6500 5950 7200 5950
+	6500 5950 6850 5950
 Wire Wire Line
-	7200 6050 6500 6050
+	6850 6050 6500 6050
 Wire Wire Line
-	6500 6150 7200 6150
+	6500 6150 6850 6150
 Wire Wire Line
-	6500 6250 7200 6250
+	6500 6250 6850 6250
 Wire Wire Line
-	8550 5050 6800 5050
+	6800 1100 8100 1100
 Wire Wire Line
-	6800 1100 7500 1100
+	8100 1500 6500 1500
 Wire Wire Line
-	7500 1500 6500 1500
+	9100 1600 9400 1600
 Wire Wire Line
-	8500 1600 9400 1600
+	9100 1200 9400 1200
 Wire Wire Line
-	8500 1200 9400 1200
-Wire Wire Line
-	8500 1300 9400 1300
+	9100 1300 9400 1300
 Text GLabel 9400 2850 2    50   Input ~ 0
-ESP_Z80CONTROL_ENABLE
+ESP_ControlLines_Enable
 Text GLabel 9850 3800 0    50   Input ~ 0
 ESP_Z80IO_WR_IRQ
-Text GLabel 7400 1800 0    50   Input ~ 0
+Text GLabel 7600 1800 0    50   Input ~ 0
 ESP_IO_RD
 Text GLabel 9850 3900 0    50   Input ~ 0
 ESP_Z80IO_RD_FLAG
-Text GLabel 7400 1700 0    50   Input ~ 0
-ESP_IO_WD
+Text GLabel 7600 1700 0    50   Input ~ 0
+CCAddr_IO_WR
 Wire Wire Line
-	7500 1700 7400 1700
+	8100 1700 7600 1700
 Text GLabel 10050 3800 2    50   Input ~ 0
 ESP_Z80IO_IRQ
 Text GLabel 10050 3900 2    50   Input ~ 0
@@ -252,33 +250,31 @@ Wire Wire Line
 	9850 3800 10050 3800
 Wire Wire Line
 	10050 3900 9850 3900
-Text Notes 9400 950  0    50   ~ 0
+Text Notes 9400 1000 0    50   ~ 0
 Clock control, select device address and \nthen send the pulse to trigger device actions
-Text GLabel 2750 3350 0    50   Input ~ 0
+Text GLabel 2750 4350 0    50   Input ~ 0
 ZX_IRQ
-Text GLabel 2750 3450 0    50   Input ~ 0
+Text GLabel 2750 4050 0    50   Input ~ 0
 ZX_NMI
-Text GLabel 2750 3550 0    50   Input ~ 0
+Text GLabel 2750 4200 0    50   Input ~ 0
 ZX_ROMCS
-Text Notes 5200 2800 0    50   ~ 0
-ZX Control
+Text Notes 5550 2800 0    50   ~ 0
+RegControlLines_Out
 Text Label 6400 1100 1    50   ~ 0
 ESP_BUS
 Wire Wire Line
-	8500 1700 8700 1700
+	9200 1700 9200 1800
 Wire Wire Line
-	8700 1700 8700 1800
-Wire Wire Line
-	8500 1800 8700 1800
+	9100 1800 9200 1800
 $Comp
 L power:GND #PWR?
 U 1 1 62CEBAC0
-P 8700 1700
-F 0 "#PWR?" H 8700 1450 50  0001 C CNN
-F 1 "GND" V 8705 1572 50  0000 R CNN
-F 2 "" H 8700 1700 50  0001 C CNN
-F 3 "" H 8700 1700 50  0001 C CNN
-	1    8700 1700
+P 9200 1700
+F 0 "#PWR?" H 9200 1450 50  0001 C CNN
+F 1 "GND" V 9205 1572 50  0000 R CNN
+F 2 "" H 9200 1700 50  0001 C CNN
+F 3 "" H 9200 1700 50  0001 C CNN
+	1    9200 1700
 	0    -1   -1   0   
 $EndComp
 $Comp
@@ -295,11 +291,11 @@ $EndComp
 Wire Wire Line
 	7600 200  7600 800 
 Wire Wire Line
-	7600 800  8000 800 
+	7600 800  8600 800 
 Wire Wire Line
-	8300 5300 8550 5300
+	7950 5300 8000 5300
 Wire Wire Line
-	8550 5050 8550 5300
+	8000 5050 8000 5300
 $Comp
 L power:+5V #PWR?
 U 1 1 62CF9D79
@@ -329,39 +325,39 @@ Wire Wire Line
 Wire Wire Line
 	9150 5200 8850 5200
 Wire Wire Line
-	7900 3350 7700 3350
+	7900 3350 7850 3350
 Connection ~ 8850 5200
 Wire Wire Line
-	8850 5200 8300 5200
+	8850 5200 7950 5200
 Wire Wire Line
 	8550 5550 8550 5450
 Connection ~ 8550 5450
 Wire Wire Line
 	8550 5450 9400 5450
 Wire Wire Line
-	8300 5550 8550 5550
-Text Label 6800 1100 0    50   ~ 0
-CC_SREG_BUS_OUT
-Text Label 6900 1200 0    50   ~ 0
-CC_REG_BUS_IN
+	7950 5550 8550 5550
+Text Label 8100 1100 2    50   ~ 0
+0_CCAddr_SRegBus_Out
+Text Label 8100 1200 2    50   ~ 0
+1_CCAddr_SRegBus_In
 Wire Wire Line
 	8850 3200 8850 5200
 Wire Wire Line
-	8850 3200 7700 3200
+	8850 3200 7850 3200
 Wire Wire Line
-	7700 3200 7700 3350
+	7850 3200 7850 3350
 Text Notes 9450 1550 0    50   ~ 0
-CC_TICK LOW at rest\n
-Text Label 6850 4000 0    50   ~ 0
+CC_Pulse Normally low, pulsed high\n
+Text Label 7800 4000 2    50   ~ 0
 BUS_D0
-Text Label 6900 5500 0    50   ~ 0
+Text Label 6850 5500 2    50   ~ 0
 BUS_D0
-Text Label 6950 1400 0    50   ~ 0
-CC_ZX_Addr_Hi
-Text Label 6950 1300 0    50   ~ 0
-CC_ZX_Addr_Lo
+Text Label 8100 1400 2    50   ~ 0
+3_CCAddr_RegAddrHi_Out
+Text Label 8100 1300 2    50   ~ 0
+2_CCAddr_RegAddrLo_Out
 Wire Wire Line
-	7400 1800 7500 1800
+	7600 1800 8100 1800
 $Comp
 L Diode:1N4148 D?
 U 1 1 62B637B4
@@ -386,32 +382,24 @@ F 3 "http://www.nxp.com/documents/data_sheet/1N4148_1N4448.pdf" H 4400 7000 50  
 $EndComp
 Wire Wire Line
 	2750 3150 2850 3150
-Text Label 6950 1600 0    50   ~ 0
-CC_ZX_Databus
-Text Label 6950 1500 0    50   ~ 0
-CC_ZX_Control
-Text Label 5000 3250 2    50   ~ 0
-ESP_WR
-Text Label 5000 3150 2    50   ~ 0
-ESP_RD
-Text Label 5000 3050 2    50   ~ 0
-ESP_MEMRQ
-Text Label 5000 2950 2    50   ~ 0
-ESP_BUSRQ
-Text Label 1950 700  0    50   ~ 0
-CC_ZX_Addr_Lo
-Text Label 3850 850  0    50   ~ 0
-CC_ZX_Addr_Hi
-Text Label 3950 1000 0    50   ~ 0
-ESP_MEMRQ
-Text Label 2050 1000 0    50   ~ 0
-ESP_MEMRQ
+Text Label 8100 1600 2    50   ~ 0
+5_CCAddr_Host
+Text Label 8100 1500 2    50   ~ 0
+4_CCAddr_RegControlLines_Out
+Text Label 4950 3250 2    50   ~ 0
+CL_WR
+Text Label 4950 3150 2    50   ~ 0
+CL_RD
+Text Label 4950 3050 2    50   ~ 0
+CL_MEMRQ
+Text Label 4950 2950 2    50   ~ 0
+CL_BUSRQ
 Text Label 5900 3850 0    50   ~ 0
-CC_ZX_Control
+CCAddr_RegControlLines_Out
 Text Label 8300 2850 0    50   ~ 0
-ESP_CONTROL_ENABLE
+ESP_ControlLines_Enable
 Text Label 5900 3950 0    50   ~ 0
-ESP_CONTROL_ENABLE
+ESP_ControlLines_Enable
 $Comp
 L 74xx:74LS374 U?
 U 1 1 62A0E412
@@ -445,11 +433,11 @@ Wire Wire Line
 Wire Wire Line
 	5950 850  5950 1400
 Wire Wire Line
-	5950 1400 7500 1400
+	5950 1400 8100 1400
 Wire Wire Line
 	6050 700  6050 1300
 Wire Wire Line
-	6050 1300 7500 1300
+	6050 1300 8100 1300
 Wire Wire Line
 	2050 1000 2050 1250
 Wire Wire Line
@@ -489,8 +477,6 @@ Entry Wire Line
 Wire Bus Line
 	6400 700  6400 1150
 Connection ~ 6400 1150
-Wire Wire Line
-	6800 1100 6800 5050
 Wire Wire Line
 	6900 1200 6900 3700
 Wire Wire Line
@@ -543,68 +529,56 @@ Wire Wire Line
 $Comp
 L 74xx:74LS32 U?
 U 2 1 62C3FF66
-P 4200 4600
-F 0 "U?" V 4154 4788 50  0000 L CNN
-F 1 "74LS32" V 4245 4788 50  0000 L CNN
-F 2 "" H 4200 4600 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4200 4600 50  0001 C CNN
-	2    4200 4600
+P 4200 5050
+F 0 "U?" V 4154 5238 50  0000 L CNN
+F 1 "74LS32" V 4245 5238 50  0000 L CNN
+F 2 "" H 4200 5050 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 4200 5050 50  0001 C CNN
+	2    4200 5050
 	0    1    1    0   
 $EndComp
 $Comp
 L 74xx:74LS32 U?
 U 1 1 62C465D5
-P 3600 3350
-F 0 "U?" H 3600 3033 50  0000 C CNN
-F 1 "74LS32" H 3600 3124 50  0000 C CNN
-F 2 "" H 3600 3350 50  0001 C CNN
-F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 3600 3350 50  0001 C CNN
-	1    3600 3350
+P 3450 3500
+F 0 "U?" H 3450 3183 50  0000 C CNN
+F 1 "74LS32" H 3450 3274 50  0000 C CNN
+F 2 "" H 3450 3500 50  0001 C CNN
+F 3 "http://www.ti.com/lit/gpn/sn74LS32" H 3450 3500 50  0001 C CNN
+	1    3450 3500
 	-1   0    0    1   
 $EndComp
 Wire Wire Line
-	4400 6850 4400 3250
-Connection ~ 4400 3250
-Wire Wire Line
 	4400 3250 4650 3250
 Wire Wire Line
-	4400 1600 7500 1600
+	4400 1600 8100 1600
 Wire Wire Line
-	3150 3150 4100 3150
-Wire Wire Line
-	4100 4300 4100 3150
-Connection ~ 4100 3150
+	4100 4750 4100 3150
 Wire Wire Line
 	4400 1600 4400 2300
 Wire Wire Line
-	3900 3250 4400 3250
+	3750 3400 3950 3400
 Wire Wire Line
-	3250 3350 3300 3350
-Wire Wire Line
-	3900 3450 3950 3450
+	3100 3500 3150 3500
 Wire Wire Line
 	4650 7050 5150 7050
 Wire Wire Line
 	7550 3600 7800 3600
 Wire Wire Line
-	7800 3450 7650 3450
+	7800 3450 7750 3450
 Wire Wire Line
-	7650 3450 7650 2400
+	7750 3450 7750 2400
 Wire Wire Line
-	7650 2400 9400 2400
+	7750 2400 9400 2400
 Wire Wire Line
 	6900 3700 7800 3700
 Wire Wire Line
-	3950 3450 3950 2300
-Wire Wire Line
 	3950 2300 4400 2300
 Wire Wire Line
-	4300 4300 4300 2400
-Connection ~ 7650 2400
+	4300 4750 4300 2400
+Connection ~ 7750 2400
 Wire Wire Line
-	4300 2400 7650 2400
-Text Label 4300 4350 1    50   ~ 0
-ESP_ShiftLoad_DATA_IN
+	4300 2400 7750 2400
 Wire Wire Line
 	4100 3150 4950 3150
 Wire Wire Line
@@ -613,7 +587,7 @@ Connection ~ 4650 3250
 Wire Wire Line
 	4650 3250 4950 3250
 Text Label 8300 2400 0    50   ~ 0
-ESP_ShiftLoad_DATA_IN
+SRegBus_In_ShiftLoad
 $Comp
 L power:GND #PWR?
 U 1 1 62AEB787
@@ -625,10 +599,6 @@ F 3 "" H 7550 3900 50  0001 C CNN
 	1    7550 3900
 	0    1    1    0   
 $EndComp
-Connection ~ 7550 3900
-Wire Wire Line
-	7550 3600 7550 3900
-Connection ~ 8700 1700
 Text Label 5950 2950 0    50   ~ 0
 BUS_D0
 Text Label 2950 1250 2    50   ~ 0
@@ -640,12 +610,12 @@ BUS_D0
 Wire Wire Line
 	2750 2950 2900 2950
 Wire Wire Line
-	4500 3050 4500 1000
+	4550 3050 4550 1000
 Wire Wire Line
-	3950 1000 4500 1000
-Connection ~ 4500 3050
+	3950 1000 4550 1000
+Connection ~ 4550 3050
 Wire Wire Line
-	4500 3050 4950 3050
+	4550 3050 4950 3050
 $Comp
 L Device:R R?
 U 1 1 62AFDEA6
@@ -660,12 +630,12 @@ $EndComp
 $Comp
 L Device:R R?
 U 1 1 62B0343C
-P 3100 3350
-F 0 "R?" V 2893 3350 50  0000 C CNN
-F 1 "1k" V 2984 3350 50  0000 C CNN
-F 2 "" V 3030 3350 50  0001 C CNN
-F 3 "~" H 3100 3350 50  0001 C CNN
-	1    3100 3350
+P 2950 3500
+F 0 "R?" V 2743 3500 50  0000 C CNN
+F 1 "1k" V 2834 3500 50  0000 C CNN
+F 2 "" V 2880 3500 50  0001 C CNN
+F 3 "~" H 2950 3500 50  0001 C CNN
+	1    2950 3500
 	0    1    1    0   
 $EndComp
 $Comp
@@ -691,16 +661,9 @@ F 3 "~" H 3400 3050 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	3200 2700 3200 2950
-Wire Wire Line
 	3200 2950 4950 2950
 Wire Wire Line
-	3550 3050 4500 3050
-Connection ~ 3200 2950
-Wire Wire Line
-	2950 3250 2750 3250
-Wire Wire Line
-	2950 3250 2950 3350
+	3550 3050 4550 3050
 $Comp
 L Device:R R?
 U 1 1 62B459FD
@@ -713,7 +676,7 @@ F 3 "~" H 3750 7150 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	4200 4900 4200 6850
+	4200 5350 4200 6850
 Wire Wire Line
 	3900 7150 4200 7150
 Connection ~ 4200 7150
@@ -735,6 +698,71 @@ F 3 "" H 3400 7150 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	3400 7150 3600 7150
+Connection ~ 9200 1700
+Wire Wire Line
+	9100 1700 9200 1700
+Text Label 4300 4750 1    50   ~ 0
+SRegBus_In_ShiftLoad
+Text Label 4100 4750 1    50   ~ 0
+CL_RD
+$Comp
+L Diode:1N4148 D?
+U 1 1 62B60B5A
+P 3700 3150
+F 0 "D?" H 3700 2934 50  0000 C CNN
+F 1 "1N4148" H 3700 3025 50  0000 C CNN
+F 2 "Diode_THT:D_DO-35_SOD27_P7.62mm_Horizontal" H 3700 2975 50  0001 C CNN
+F 3 "http://www.nxp.com/documents/data_sheet/1N4148_1N4448.pdf" H 3700 3150 50  0001 C CNN
+	1    3700 3150
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	4100 3150 3850 3150
+Connection ~ 4100 3150
+Wire Wire Line
+	3550 3150 3150 3150
+Wire Wire Line
+	2800 3500 2750 3500
+Wire Wire Line
+	3950 2300 3950 3400
+Wire Wire Line
+	4400 3250 4400 3600
+Wire Wire Line
+	3750 3600 4400 3600
+Connection ~ 4400 3600
+Wire Wire Line
+	4400 3600 4400 6850
+Text Label 4550 1000 2    50   ~ 0
+CL_MEMRQ
+Text Label 3750 3600 0    50   ~ 0
+CL_WR
+Text Label 3750 3400 0    50   ~ 0
+5_CCAddr_Host
+Text Label 1950 700  0    50   ~ 0
+2_CCAddr_RegAddrLo_Out
+Text Label 3850 850  0    50   ~ 0
+3_CCAddr_RegAddrHi_Out
+$Comp
+L power:GND #PWR?
+U 1 1 62BA4AE1
+P 7550 3600
+F 0 "#PWR?" H 7550 3350 50  0001 C CNN
+F 1 "GND" V 7555 3472 50  0000 R CNN
+F 2 "" H 7550 3600 50  0001 C CNN
+F 3 "" H 7550 3600 50  0001 C CNN
+	1    7550 3600
+	0    1    1    0   
+$EndComp
+Text Label 7800 3700 2    50   ~ 0
+1_CCAddr_SRegBus_In
+Text Label 7750 3450 2    50   ~ 0
+SRegBus_In_ShiftLoad
+Text Label 8000 5300 0    50   ~ 0
+0_CCAddr_SRegBus_Out
+Wire Wire Line
+	6800 1100 6800 5050
+Wire Wire Line
+	6800 5050 8000 5050
 Wire Bus Line
 	1150 1150 6400 1150
 Wire Bus Line

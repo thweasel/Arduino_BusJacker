@@ -1,5 +1,6 @@
 #include "BusJacker_Z80_Operations.h"
 
+// Control line masks for control signals
 #define mask_BUSRQ B00000001
 #define mask_MEMRQ B00000010
 #define mask_RD B00000100

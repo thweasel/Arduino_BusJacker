@@ -89,7 +89,7 @@ void testSREGLoopback(void)
   }
   else
   {
-    // c = shiftIn(SRegBus_In_DataPin, CLOCK, MSBFIRST);
+    // c = shiftIn(SRegBus_In_Data_Pin, CLOCK, MSBFIRST);
     Serial.print("\nReadBUS ");
     c = loadAndGetDataFromSregBus_In();
     Serial.print("Input ");

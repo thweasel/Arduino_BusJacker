@@ -3,10 +3,10 @@
 // Defs for Clock Control
 // Port and Pins
 #define CC_PORT PORTD
-#define CC_A0   7
-#define CC_A1   6
-#define CC_A2   5
-#define CC_TICK 4
+#define CC_A0       7
+#define CC_A1       6
+#define CC_A2       5
+#define CC_Pulse    4
 
 // Clock Control Address table
 #define CCAddr_MASK B00011111
@@ -15,20 +15,20 @@
 #define CCAddr_RegAddrHi_Out        2
 #define CCAddr_RegAddrLo_Out        3
 #define CCAddr_RegControlLines_Out  4
-#define CCAddr_HostSystem           5
+#define CCAddr_Host                 5
 
 // void setupClockControlPins(void);    // HIDDEN
 
 // Defs for SREG access
 // Port and Pints
 #define SRegBus_PORT PORTC
-#define SRegBus_In_ShiftLoadPin 14
-#define SRegBus_In_DataPin      15
-#define SRegBus_Out_DataPin     16
+#define SRegBus_In_ShiftLoad_Pin 14
+#define SRegBus_In_Data_Pin      15
+#define SRegBus_Out_Data_Pin     16
 
-#define SRegBus_In_ShiftLoadBit 0
-#define SRegBus_In_DataBit      1
-#define SRegBus_Out_DataBit     2
+#define SRegBus_In_ShiftLoad_Bit 0
+#define SRegBus_In_Data_Bit      1
+#define SRegBus_Out_Data_Bit     2
 
 #define SREG_LOAD   0
 #define SREG_SHIFT  1
