@@ -2,6 +2,8 @@
 
 #include "BusJacker_Z80_Operations.h"
 
+#include "BusJacker_Tests.h"
+
 
 
 void setup()
@@ -12,6 +14,22 @@ void setup()
   setup_BUSJacker();
 
   // testBitPossition();
+}
+
+
+void readPort()
+{
+  bitSet(PORTD, CC_Pulse);
+  uint8_t portByte = 0;
+
+  while (1)
+  {
+    bitClear(PORTD, CC_Pulse);
+    portByte = PORTB;
+    portByte = PORTC;
+    bitSet(PORTD, CC_Pulse);
+    delayMicroseconds(10);
+  }
 }
 
 void loop()
@@ -26,11 +44,14 @@ void loop()
 
   // joker();
 
-  while(1){
-  sendCCPulse();
+  readPort();
+
+  while (1)
+  {
+    sendCCPulse();
   }
-  fujiWrite();
-  testReadMemory();
+  // fujiWrite();
+  // testReadMemory();
 
   Serial.print("\n- - - - - -");
   delay(1000);

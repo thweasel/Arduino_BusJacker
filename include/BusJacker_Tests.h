@@ -1,4 +1,4 @@
-
+#include <Arduino.h>
 
 void testInternalBUS(void);
 void testZXControl(void);
